@@ -18,7 +18,7 @@ async function searchResults(keyword) {
             });
         }
 
-        console.log(results);
+        console.log(JSON.stringify(results));
         return JSON.stringify(results);
     } catch (error) {
         console.log('Fetch error in searchResults:', error);
@@ -97,7 +97,7 @@ Genres: ${genres}
             airdate: ''
         }];
 
-        console.log(transformedResults);
+        console.log(JSON.stringify(transformedResults));
         return JSON.stringify(transformedResults);
     } catch (error) {
         console.log('Details error:', error);
@@ -130,7 +130,7 @@ async function extractChapters(url) {
             chapters.push(chapter);
         }
 
-        console.log(chapters);
+        console.log(JSON.stringify(chapters));
         return JSON.stringify(chapters);
     } catch (error) {
         console.log('Fetch error in extractChapters:', error);
@@ -154,7 +154,7 @@ async function extractText(url) {
 
         content = content.trim();
 
-        console.log(content);
+        console.log(JSON.stringify(content));
         return content;
     } catch (error) {
         console.log("Fetch error in extractText:", error);
