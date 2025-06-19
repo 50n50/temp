@@ -131,7 +131,7 @@ async function extractChapters(url) {
         }
 
         console.log(JSON.stringify(chapters));
-        return JSON.stringify(chapters);
+        return chapters;
     } catch (error) {
         console.log('Fetch error in extractChapters:', error);
         return JSON.stringify([]);
