@@ -93,7 +93,7 @@ Genres: ${genres}
 
         const transformedResults = [{
             description,
-            aliases,
+            aliases: '',
             airdate: ''
         }];
 
