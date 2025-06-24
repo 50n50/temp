@@ -1,7 +1,13 @@
 async function searchResults(keyword) {
     try {
         const encodedKeyword = encodeURIComponent(keyword);
-        const responseText = await cloudflareFetch(`https://novellive.app/book/the-innkeeper/chapter-1-a-shooting-star-and-a-wish`);
+        cconst responseText = await cloudflareFetch(`https://novellive.app/book/the-innkeeper/chapter-1-a-shooting-star-and-a-wish`, {
+    moduleId: "testModule",
+    headers: {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+    }
+});
         const data = await responseText.text();
         console.log(data);
         return null;
