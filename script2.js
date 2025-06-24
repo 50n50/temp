@@ -1,25 +1,10 @@
 async function searchResults(keyword) {
     try {
         const encodedKeyword = encodeURIComponent(keyword);
-        const responseText = await soraFetch(`https://novelfire.net/ajax/searchLive?inputContent=${encodedKeyword}`);
-        const data = await responseText.json();
-
-        const html = data.html;
-        const results = [];
-
-        const regex = /<a href="([^"]+)">[\s\S]*?<img src="([^"]+)">[\s\S]*?<h4 class="novel-title[^>]*">([^<]+)<\/h4>/g;
-
-        let match;
-        while ((match = regex.exec(html)) !== null) {
-            results.push({
-                title: match[3].trim(),
-                image: match[2].trim(),
-                href: match[1].trim()
-            });
-        }
-
-        console.log(JSON.stringify(results));
-        return JSON.stringify(results);
+        const responseText = await cloudflareFetch(`https://novellive.app/book/the-innkeeper/chapter-1-a-shooting-star-and-a-wish`);
+        const data = await responseText.text();
+        console.log(data);
+        return null;
     } catch (error) {
         console.log('Fetch error in searchResults:', error);
         return JSON.stringify([{ title: 'Error', image: '', href: '' }]);
