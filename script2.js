@@ -1,21 +1,15 @@
 async function searchResults(keyword) {
     try {
         const encodedKeyword = encodeURIComponent(keyword);
-        const headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
-        };
         
-        const response = await fetchCloudflare(
-            "https://novellive.app/book/the-innkeeper/chapter-1-a-shooting-star-and-a-wish",
-            headers,  
-            "GET",    
-            null,     
-            true,     
-            "utf-8"   
-        );
+        const response = await fetchCloudflare("https://jkanime.net/", {
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+            }
+        });
         
-        const data = await response.text();
+        const data = response.body;
         console.log(data);
         return null;
     } catch (error) {
