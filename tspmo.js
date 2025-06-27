@@ -1,40 +1,47 @@
 async function searchResults(keyword) {
   try {
     const encodedKeyword = encodeURIComponent(keyword);
-    const response = await soraFetch(`https://mangakatana.com/?search=${encodedKeyword}&search_by=book_name`);
+    const response = await fetchv2(`https://mangakatana.com/?search=${encodedKeyword}&search_by=book_name`);
     const html = await response.text();
     const results = [];
-    
+
     const itemRegex = /<div class="item"[^>]*data-genre="[^"]*"[^>]*data-id="[^"]*"[^>]*>([\s\S]*?)(?=<div class="item"|$)/g;
-    
+
     let itemMatch;
     while ((itemMatch = itemRegex.exec(html)) !== null) {
       const itemHtml = itemMatch[1];
-      
+
       const titleRegex = /<h3 class="title">\s*<a href="([^"]+)"[^>]*>([^<]+)<\/a>/;
+      const imageRegex = /<div class="wrap_img">\s*<a[^>]*><img src="([^"]+)"/;
+
       const titleMatch = titleRegex.exec(itemHtml);
-      
-      if (titleMatch) {
+      const imageMatch = imageRegex.exec(itemHtml);
+
+      if (titleMatch && imageMatch) {
         const title = titleMatch[2].trim();
         const href = titleMatch[1].trim();
-        
-        if (title && href && 
-            !title.includes("'+") && 
-            !href.includes("'+") &&
-            href.startsWith('http')) {
+        const image = imageMatch[1].trim();
+
+        if (
+          title && href && image &&
+          !title.includes("'+") &&
+          !href.includes("'+") &&
+          href.startsWith("http")
+        ) {
           results.push({
             title: title,
-            href: href
+            href: href,
+            image: image
           });
         }
       }
     }
-    
+
     console.log(`Search results for "${keyword}":`, JSON.stringify(results));
     return JSON.stringify(results);
   } catch (error) {
     console.log('Fetch error in searchResults:', error);
-    return JSON.stringify([{ title: 'Error', href: '' }]);
+    return JSON.stringify([{ title: 'Error', href: '', image: '' }]);
   }
 }
 
