@@ -1,17 +1,25 @@
 async function searchResults(keyword) {
     try {
         const encodedKeyword = encodeURIComponent(keyword);
-        
-        const response = await fetchCloudflare("https://jkanime.net/", {
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
-            }
-        });
-        
-        const data = response.body;
-        console.log(data);
-        return null;
+        const responseText = await soraFetch(`https://novelfire.net/ajax/searchLive?inputContent=${encodedKeyword}`);
+        const data = await responseText.json();
+
+        const html = data.html;
+        const results = [];
+
+        const regex = /<a href="([^"]+)">[\s\S]*?<img src="([^"]+)">[\s\S]*?<h4 class="novel-title[^>]*">([^<]+)<\/h4>/g;
+
+        let match;
+        while ((match = regex.exec(html)) !== null) {
+            results.push({
+                title: match[3].trim(),
+                image: match[2].trim(),
+                href: match[1].trim()
+            });
+        }
+
+        console.log(JSON.stringify(results));
+        return JSON.stringify(results);
     } catch (error) {
         console.log('Fetch error in searchResults:', error);
         return JSON.stringify([{ title: 'Error', image: '', href: '' }]);
