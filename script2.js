@@ -157,7 +157,7 @@ async function extractText(url) {
         `.trim();
 
         console.log(JSON.stringify(content));
-        return "https://github.com/daisy/epub-accessibility-tests/releases/download/fundamental-2.0/Fundamental-Accessibility-Tests-Basic-Functionality-v2.0.0.epub";
+        return content;
     } catch (error) {
         console.log("Fetch error in extractText:", error);
         return JSON.stringify({ text: 'Error extracting text' });
