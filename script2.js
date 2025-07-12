@@ -111,24 +111,13 @@ Genres: ${genres}
 
 async function extractChapters(url) {
     try {
-        const response = await soraFetch(url);
-        const htmlText = await response.text();
-
-        const chaptersMatch = htmlText.match(/<i class="icon-book-open"><\/i>\s*(\d+)\s*<\/strong><small>Chapters<\/small>/);
-        const chaptersNumber = chaptersMatch ? chaptersMatch[1] : 'Unknown';
-
-        let chapters = [];
-
-        for (let i = 1; i <= chaptersNumber; i++) {
-            const chapterUrl = `${url}/chapter-${i}`;
-            const chapter = {
-                href: chapterUrl,
-                number: i,
-                title: `Chapter ${i}`
-            };
-
-            chapters.push(chapter);
-        }
+        const chapters = [
+            {
+                href: "https://example.com/book-name/chapter-1",
+                number: 1,
+                title: "The Beginning"
+            }
+        ];
 
         console.log(JSON.stringify(chapters));
         return chapters;
@@ -137,6 +126,7 @@ async function extractChapters(url) {
         return JSON.stringify([]);
     }
 }
+
 
 async function extractText(url) {
     try {
