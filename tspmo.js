@@ -127,9 +127,9 @@ async function extractImages(url) {
       .filter(item => item.length > 0)
       .map(item => item.replace(/^['"]|['"]$/g, ''));
 
-    return {
+    return JSON.stringify({
       pages: thzq
-    };
+    });
 
   } catch (error) {
     console.error("❌ Error in extractImages:", error);
