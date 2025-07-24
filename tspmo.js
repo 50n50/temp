@@ -110,63 +110,35 @@ async function extractChapters(url) {
         return [];
     }
 }
-async function extractText(url) {
+
+async function extractImages(url) {
   try {
     const response = await soraFetch(url);
     const htmlText = await response.text();
-    
+
     const thzqMatch = htmlText.match(/var\s+thzq\s*=\s*\[(.*?)\];/s);
     if (!thzqMatch) throw new Error("thzq array not found");
-    
+
     const arrayContent = thzqMatch[1];
-    
+
     const thzq = arrayContent
       .split(',')
       .map(item => item.trim())
       .filter(item => item.length > 0)
-      .map(item => {
-        return item.replace(/^['"]|['"]$/g, '');
-      });
-    
-    const chapterMatch = url.match(/c(\d+\.?\d*)/i);
-    const chapterNumber = chapterMatch ? chapterMatch[1] : "Unknown";
-    
-    const html = `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Chapter ${chapterNumber} - Blue Box</title>
-  <style>
-    body {
-      margin: 0; 
-      padding: 0; 
-      background: #000;
-    }
-    img {
-      display: block;
-      width: 100vw;
-      height: auto;
-      max-width: 100%;
-      margin: 0;
-    }
-  </style>
-</head>
-<body>
-${thzq.map(src => `  <img src="${src.trim()}" alt="Page image" />`).join('\n')}
-</body>
-</html>
-    `.trim();
-    
-    console.log(html);
-    return html;
-    
+      .map(item => item.replace(/^['"]|['"]$/g, ''));
+
+    return {
+      pages: thzq
+    };
+
   } catch (error) {
-    console.error("❌ Error in extractText:", error);
-    return `<p>Error loading chapter images: ${error.message}</p>`;
+    console.error("❌ Error in extractImages:", error);
+    return {
+      error: `Error loading chapter images: ${error.message}`
+    };
   }
 }
+
 function decodeHtmlEntities(str) {
     const named = {
         amp: '&',
