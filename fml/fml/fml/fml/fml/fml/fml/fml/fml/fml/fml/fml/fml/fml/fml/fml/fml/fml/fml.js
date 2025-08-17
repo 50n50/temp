@@ -65,7 +65,7 @@ async function extractStreamUrl(url) {
         ]);
         console.log(decryptedSub);
         const networkResult = await networkFetch('decryptedSub'); 
-        console.log('Network fetch result:', networkResult);
+        console.log('Network fetch result:'+ networkResult);
         return "streamUrl";
     } catch (error) {
         console.log('Fetch error:', error);
