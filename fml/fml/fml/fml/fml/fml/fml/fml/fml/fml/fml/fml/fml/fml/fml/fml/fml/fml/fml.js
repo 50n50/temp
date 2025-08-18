@@ -64,9 +64,17 @@ async function extractStreamUrl(url) {
                 })
         ]);
         console.log(decryptedSub);
-        const networkResult = await networkFetch('decryptedSub'); 
-        console.log('Network fetch result:'+ networkResult);
-        return "streamUrl";
+        const networkResult = await networkFetch(decryptedSub + "?autostart=true", timeout = 5); 
+        console.log('Network fetch result:', networkResult);
+
+        if (networkResult.m3u8Links && networkResult.m3u8Links.length > 0) {
+            const streamUrl = networkResult.m3u8Links[0];
+            console.log('Found stream URL:', streamUrl);
+            return streamUrl;
+        } else {
+            console.log('No m3u8 links found');
+            return null; 
+        }
     } catch (error) {
         console.log('Fetch error:', error);
         return "https://error.org";
