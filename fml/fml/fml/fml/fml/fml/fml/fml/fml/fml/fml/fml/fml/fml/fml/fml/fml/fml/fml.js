@@ -103,7 +103,7 @@ async function extractEpisodes(animeUrl) {
     const cleanedHtml = cleanJsonHtml(episodeListData.result);
     
     const episodeRegex = /<a[^>]+num="([^"]+)"[^>]+token="([^"]+)"[^>]*>/g;
-    const episodeMatches = [...cleanedHtml.matchAll(episodeRegex)].slice(0, 100);
+    const episodeMatches = [...cleanedHtml.matchAll(episodeRegex)];
     
     const episodePromises = episodeMatches.map(([_, episodeNum, episodeToken]) => 
       fetchv2(`https://ilovekai.simplepostrequest.workers.dev/?ilovefeet=${encodeURIComponent(episodeToken)}`)
